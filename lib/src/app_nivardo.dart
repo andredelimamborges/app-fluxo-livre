@@ -1,16 +1,36 @@
-import 'package:app_nivardo/src/pages/cadastro_page.dart';
-import 'package:app_nivardo/src/pages/home_page.dart';
+import 'package:app_fluxolivrep/src/pages/admin_page.dart';
+import 'package:app_fluxolivrep/src/pages/cad_usuario_page.dart';
+import 'package:app_fluxolivrep/src/pages/home_page.dart';
+import 'package:app_fluxolivrep/src/pages/login_page.dart';
+import 'package:app_fluxolivrep/src/pages/users_page.dart';
+import 'package:app_fluxolivrep/src/providers/auth_provider.dart';
+import 'package:app_fluxolivrep/src/providers/user_register_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AppNivardo extends StatelessWidget {
-  const AppNivardo({super.key});
+class AppFluxolivre extends StatelessWidget {
+  const AppFluxolivre({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'App Fluxo Livre',
-      home: HomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserRegisterProvider()),
+        ChangeNotifierProvider(
+          create: (context) => AuthProvider()..loadToken(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'AppFluxoLivre',
+        routes: {
+          '/': (_) => AdminPage(),// LoginPage(),
+          '/home': (_) => HomePage(),
+          '/novousuario': (_) => CadUsuarioPage(),
+          '/admin': (_) => LoginPage(),//AdminPage(),
+        },
+      ),
     );
   }
 }
